@@ -1,0 +1,254 @@
+\documentclass[11pt]{ltjsarticle}
+% \usepackage{luatexja}
+\usepackage[top=30truemm,bottom=30truemm,left=25truemm,right=25truemm]{geometry}
+\usepackage{amsmath}
+\usepackage{amsthm}
+  \theoremstyle{definition}
+  \newtheorem{theorem}{定理}[section]
+  \newtheorem{definition}[theorem]{定義}
+  \newtheorem{lemma}[theorem]{補題}
+  \newtheorem{corollary}[theorem]{系}
+  \newtheorem{proposition}[theorem]{命題}
+  \newtheorem*{remark}{注意}
+  \newtheorem{example}{例}
+\usepackage{amssymb}
+\usepackage[stable]{footmisc}
+% \usepackage[all]{xy}
+% \usepackage{graphicx}
+%\begin{figure}[t]
+%  \begin{center}
+%    \includegraphics[width=\linewidth,pagebox=cropbox,clip]{}
+%    \caption{}
+%    \label{}
+% \end{center}
+%\end{figure}
+\usepackage{here}
+\usepackage{enumerate}%\begin{enumerate}[括弧の種類]
+\usepackage{mathrsfs}%\mathscr{}
+\usepackage{braket} %\bra{}, \ket{}, \braket{ | | }
+\usepackage[
+    luatex,
+    pdfencoding=auto,
+    colorlinks=true,
+    linkcolor=blue,
+    setpagesize=false,
+    bookmarks=true,
+    bookmarksnumbered=true
+]{hyperref}
+
+%color
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+
+%tikz
+\usepackage{tikz}
+\usetikzlibrary{arrows,arrows.meta,intersections, calc,positioning,decorations.pathreplacing,decorations.pathmorphing,shapes}
+\usetikzlibrary{patterns}
+\usetikzlibrary{decorations.markings}
+\usetikzlibrary{knots}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%% mathcal %%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\CA}{\mathcal{A}}
+\newcommand{\CB}{\mathcal{B}}
+\newcommand{\CC}{\mathcal{C}}
+\newcommand{\CD}{\mathcal{D}}
+\newcommand{\CE}{\mathcal{E}}
+\newcommand{\CF}{\mathcal{F}}
+\newcommand{\CG}{\mathcal{G}}
+\newcommand{\CH}{\mathcal{H}}
+\newcommand{\CI}{\mathcal{I}}
+\newcommand{\CJ}{\mathcal{J}}
+\newcommand{\CK}{\mathcal{K}}
+\newcommand{\CL}{\mathcal{L}}
+\newcommand{\CM}{\mathcal{M}}
+\newcommand{\CN}{\mathcal{N}}
+\newcommand{\CO}{\mathcal{O}}
+\newcommand{\CP}{\mathcal{P}}
+\newcommand{\CQ}{\mathcal{Q}}
+\newcommand{\CR}{\mathcal{R}}
+\newcommand{\CS}{\mathcal{S}}
+\newcommand{\CT}{\mathcal{T}}
+\newcommand{\CU}{\mathcal{U}}
+\newcommand{\CV}{\mathcal{V}}
+\newcommand{\CW}{\mathcal{W}}
+\newcommand{\CX}{\mathcal{X}}
+\newcommand{\CY}{\mathcal{Y}}
+\newcommand{\CZ}{\mathcal{Z}}
+
+
+%%%%%%%%%%%%%%%%%  notations  %%%%%%%%%%%%%%%%%%
+
+\newcommand{\inn}[2]{\langle#1,#2\rangle}%inner product
+\newcommand{\norm}[1]{\|#1\|}%norm
+\newcommand{\N}{\mathbb{N}}%natural number
+\newcommand{\R}{\mathbb{R}}%real number
+\newcommand{\C}{\mathbb{C}}%complex number
+\newcommand{\Q}{\mathbb{Q}}%rational number
+\newcommand{\Z}{\mathbb{Z}}%integer
+\newcommand{\imineq}[2]{\vcenter{\hbox{\includegraphics[height=#2ex]{#1}}}}
+\newcommand{\BS}{\mathbb{S}}
+\newcommand{\BB}{\mathbb{B}}
+\renewcommand{\d}{\mathrm{d}}
+\renewcommand{\Set}[2]{\left\{#1\;\middle|\;#2\right\}}
+
+
+
+
+\newcommand{\Smat}[2]{{\mathcal{S}_{#1}}^{#2}}
+\newcommand{\Sdag}[2]{{\left(\mathcal{S}^{\dagger}\right)_{#1}}^{#2}}
+\newcommand{\Tdag}[2]{{\left(\mathcal{T}^{\dagger}\right)_{#1}}^{#2}}
+\newcommand{\Tmat}[2]{{\mathcal{T}_{#1}}^{#2}}
+\newcommand{\fusion}[3]{{\mathcal{N}_{#1#2}}^{#3}}
+\newcommand{\sph}{\mathbb{S}}
+\newcommand{\torus}{\mathbb{T}}
+\newcommand{\ball}{\mathbb{B}}
+\newcommand{\disk}{\mathbb{D}^2}
+\newcommand{\lie}[1]{\mathfrak{#1}}
+\newcommand{\aff}[1]{\widehat{\mathfrak{#1}}} %affine lie algebra
+\newcommand{\rep}[1]{\mathbf{#1}}
+\newcommand{\nc}{G_{\text{N}}} %Newton constant
+\newcommand{\PI}[1]{\mathcal{D}#1\,}
+\newcommand{\tm}[2]{\tau^{#1|#2}} %transition matrix
+\newcommand{\ttm}[2]{\widetilde{\tau}^{#1|#2}} %unnormalized transition matrix
+\newcommand{\vir}{\mathrm{Vir}} %Virasoro algebra
+
+
+
+
+
+%%%%%%%%%%%%%%%%%% math operators %%%%%%%%%%%%%%%%%%%%%%%%
+% \newcommand{\tr}{\mathrm{tr}}%tr
+% \newcommand{\Tr}{\mathrm{Tr}}%Tr
+% \renewcommand{\d}{\mathrm{d}}
+% \newcommand{\ad}{\mathrm{ad}}
+% \newcommand{\Ad}{\mathrm{Ad}}
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\ad}{ad}
+\DeclareMathOperator{\Ad}{Ad}
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\Var}{Var}
+
+\let\Re\relax
+\DeclareMathOperator{\Re}{Re}
+\let\Im\relax
+\DeclareMathOperator{\Im}{Im}
+
+%%%%%%%%%%%%%%%%%%%%%% comment %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\cmt}[1]{\textcolor{red}{\textbf{(#1)}}}
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%% 数式番号 %%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\renewcommand{\theequation}{%
+\thesection.\arabic{equation}}
+\@addtoreset{equation}{chapter}
+\makeatother
+
+
+
+
+\begin{document}
+
+\tableofcontents
+
+\section{便利な定理まとめ}
+\subsection{推定論}
+\begin{theorem}\label{th:UMVU1}
+    $\hat{\theta}$が不偏推定量であるとする。$\hat{\theta}$がCram\'{e}r-Raoの下限
+    \begin{align}\label{CRinf}
+        \Var_\theta[\hat{\theta}] = \frac{1}{nI(\theta)}
+    \end{align}
+    を満たすならば、$\hat{\theta}$は一様最小分散不偏（UMVU）推定量である。ここで、
+    \begin{align}
+        I(\theta) = \E_\theta\left[\left(\frac{\partial \log f(X|\theta)}{\partial \theta}\right)^2\right]
+    \end{align}
+    はFisher情報量である\footnote{Fisher情報量の定義には、$\log f(X)$のところを$n$サンプルの対数尤度関数で定義するものもあるので注意（例：竹村の$I_n(\theta)$）。}。
+\end{theorem}
+
+このCram\'{e}r-Raoの下限\eqref{CRinf}を用いたUMVUの判定方法は、あくまで十分条件を与えるのみであることに注意。一方、以下の完全十分統計量による判定方法はUMVU推定量の完全な構成法を与える。
+
+\begin{theorem}
+    $T$を完全十分統計量とする。$\hat{\theta}$が不偏推定量であるとき、
+    \begin{align}
+        \delta^*(T) :=\E[\hat{\theta}|T]
+    \end{align}
+    はUMVU推定量である。
+\end{theorem}
+\section{正規分布}
+本節では、正規分布に関する推定量の基本的事項についてのまとめ・導出を行う。
+
+実数値の確率変数$X$がパラメータ$\mu, \sigma$をもつ正規分布の確率密度関数
+\begin{align}
+    f(x|\mu, \sigma^2) = \frac{1}{\sqrt{2\pi \sigma^2}}\exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+\end{align}
+に従うとき、$X\sim N(\mu, \sigma^2)$と表記する。
+
+\subsection{1標本問題の点推定}
+$X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := \frac{1}{n}\sum_{i=1}^n X_i$とする。
+\begin{proposition}
+    パラメータ$\mu,\sigma^2$の推定量に関して、以下が成り立つ。
+    \begin{enumerate}[(1)]
+        \item $\sigma^2$が既知か未知かにかかわらず
+        \begin{align}
+            \hat{\mu} := \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+        \end{align}
+        は$\mu$のUMVU推定量かつ最尤推定量である。
+        \item $\mu$が既知の場合、
+        \begin{align}
+            \hat{\sigma}^2 :=\frac{1}{n}\sum_{i=1}^n(X_i - \mu)^2
+        \end{align}
+        は$\sigma^2$のUMVU推定量かつ最尤推定量である。
+        \item $\mu$が未知の場合、$\sigma^2$のUMVU推定量および最尤推定量はそれぞれ
+        \begin{align}
+            \hat{\sigma}_{\text{UMVU}}^2 :=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2\, , \qquad \hat{\sigma}_{\text{MLE}}^2 :=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+        \end{align}
+        で与えられる。
+    \end{enumerate}
+\end{proposition}
+\begin{proof}
+    \begin{enumerate}[(1)]
+        \item $\E[\hat{\mu}]=\mu$が成り立つから、$\hat{\mu}$は$\mu$の不偏推定量。
+        \begin{align}
+            \log f(X|\mu,\sigma^2) = -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X-\mu)^2}{2\sigma^2}
+        \end{align}
+        より、$\mu$に関するFisher情報量は
+        \begin{align}
+            I(\mu) = \E\left[\frac{(X-\mu)^2}{\sigma^4}\right] = \frac{1}{\sigma^2}\, .
+        \end{align}
+        $X_1,\ldots,X_n$は互いに独立だから、
+        \begin{align}
+            \Var[\hat{\mu}] = \frac{1}{n^2}\sum_{i=1}^n\Var[X_i] = \sigma^2/n\, .
+        \end{align}
+        よって定理\ref{th:UMVU1}より$\hat{\mu}$はUMVU推定量である。
+
+        次に最尤推定量が$\hat{\mu}$になることを示す。対数尤度は、
+        \begin{align}
+            \ell(\mu, \sigma | X^n) = -\frac{n}{2}\log(2\pi\sigma^2) - \sum_{i=1}^n\frac{(X_i-\mu)^2}{2\sigma^2}
+        \end{align}
+        これを$\mu$について最大化すると、
+        \begin{align}
+            \hat{\mu}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n X_i
+        \end{align}
+        となり、これは$\hat{\mu}$に一致。
+
+        \item $X_1,\ldots,X_n$は互いに独立であることから$\E[\hat{\sigma}^2]=\sigma^2$が成り立つため、$\hat{\sigma}^2$は$\sigma^2$の不偏推定量。$\sigma$に関するFisher情報量は
+        \begin{align}
+            I(\sigma) = 
+        \end{align}
+    \end{enumerate}
+\end{proof}
+
+
+\end{document}
+
+
