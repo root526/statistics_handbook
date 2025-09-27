@@ -26,6 +26,7 @@
 \usepackage{enumerate}%\begin{enumerate}[括弧の種類]
 \usepackage{mathrsfs}%\mathscr{}
 \usepackage{braket} %\bra{}, \ket{}, \braket{ | | }
+\usepackage{bm}
 \usepackage[
     luatex,
     pdfencoding=auto,
@@ -154,6 +155,20 @@
 \@addtoreset{equation}{chapter}
 \makeatother
 
+%%%%%%%%%%%%%%%%%%%%%% 証明環境 %%%%%%%%%%%%%%%%%%%
+\makeatletter
+\renewenvironment{proof}[1][証明]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item\relax
+  {\bfseries
+  #1\@addpunct{.}}\hspace\labelsep\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
 
 
 
@@ -163,26 +178,54 @@
 
 \section{便利な定理まとめ}
 \subsection{推定論}
-\begin{theorem}\label{th:UMVU1}
-    $\hat{\theta}$が不偏推定量であるとする。$\hat{\theta}$がCram\'{e}r-Raoの下限
-    \begin{align}\label{CRinf}
-        \Var_\theta[\hat{\theta}] = \frac{1}{nI(\theta)}
-    \end{align}
-    を満たすならば、$\hat{\theta}$は一様最小分散不偏（UMVU）推定量である。ここで、
-    \begin{align}
+$X$をパラメータ$\theta$を持つある確率分布に従う確率変数であるとする。Fisher情報量$I(\theta)$を
+\begin{align}
         I(\theta) = \E_\theta\left[\left(\frac{\partial \log f(X|\theta)}{\partial \theta}\right)^2\right]
+\end{align}
+と定義する。期待値$\E_\theta[\cdot]$と$\theta$微分の交換に関する正則条件を満たす限り、Fisher情報量を
+\begin{align}
+    I(\theta) = -\E_\theta\left[\frac{\partial^2 \log f(X|\theta)}{\partial \theta^2}\right]
+\end{align}
+で定義しても等価である。
+
+なお、上記の定義において$f(X|\theta)$となっているところを$n$サンプル$X_1,\ldots,X_n$の尤度関数$L(\theta|X_1,\ldots,X_n)=\prod_{i=1}^nf(X_i|\theta)$に置き換えて定義したものを$I_n(\theta)$と書くと、$X_1, \ldots, X_n$が独立同分布である限り$I_n(\theta)=nI(\theta)$が成り立つ。
+$I(\theta)$と$I_n(\theta)$のどちらをFisher情報量と呼ぶのかは分野や文献に依る。
+ここでは$I(\theta)$をFisher情報量と呼ぶことにし、混合を避けるためにできるだけ$I(\theta)$のみを用いることにする。
+
+以下では$n$個の独立同分布$\bm{X}=(X_1, \ldots,X_n)^{\mathrm{T}}$の実現値からパラメータ$\theta$の値を推定する問題を考える。推定量は$\widehat{\theta}(\bm{X})$のようにハットをつけて表し、引数の$\bm{X}$はしばしば省略する。
+
+\begin{theorem}
+    推定量$\widehat{\theta}$について成り立つ以下の不等式を、Cram\'{e}r-Raoの不等式という。
+    \begin{enumerate}[(1)]
+        \item $\widehat{\theta}$が不偏推定量であるとき、
+        \begin{align}
+            \Var_\theta[\widehat{\theta}] \ge \frac{1}{nI(\theta)}
+        \end{align}
+        が成り立つ。
+        \item $\widehat{\theta}$が不偏推定量でないときは、バイアスを$b(\theta):=\E_\theta[\widehat{\theta}]-\theta$とすると、
+        \begin{align}
+            \Var_\theta[\widehat{\theta}]\ge\frac{(1 + b'(\theta))^2}{nI(\theta)}
+        \end{align}
+        が成り立つ。
+    \end{enumerate}
+\end{theorem}
+
+\begin{theorem}\label{th:UMVU1}
+    $\widehat{\theta}$が不偏推定量であるとする。$\widehat{\theta}$がCram\'{e}r-Raoの不等式の下限
+    \begin{align}\label{CRinf}
+        \Var_\theta[\widehat{\theta}] = \frac{1}{nI(\theta)}
     \end{align}
-    はFisher情報量である\footnote{Fisher情報量の定義には、$\log f(X)$のところを$n$サンプルの対数尤度関数で定義するものもあるので注意（例：竹村の$I_n(\theta)$）。}。
+    を満たすならば、$\widehat{\theta}$は一様最小分散不偏（UMVU）推定量である。
 \end{theorem}
 
 このCram\'{e}r-Raoの下限\eqref{CRinf}を用いたUMVUの判定方法は、あくまで十分条件を与えるのみであることに注意。一方、以下の完全十分統計量による判定方法はUMVU推定量の完全な構成法を与える。
 
-\begin{theorem}
-    $T$を完全十分統計量とする。$\hat{\theta}$が不偏推定量であるとき、
-    \begin{align}
-        \delta^*(T) :=\E[\hat{\theta}|T]
-    \end{align}
-    はUMVU推定量である。
+\begin{theorem}\label{th:UMVU2}
+    $T$が完全十分統計量であるとき、以下の2つが成り立つ。
+    \begin{enumerate}[(1)]
+        \item $T$の関数である不偏推定量$\delta(T)$は一意に定まり、$\delta(T)$はUMVU推定量である。
+        \item 任意の不偏推定量$\hat{\theta}$に対して、$\E[\hat{\theta}|T]$は$\delta(T)$に一致する。
+    \end{enumerate}
 \end{theorem}
 \section{正規分布}
 本節では、正規分布に関する推定量の基本的事項についてのまとめ・導出を行う。
@@ -200,51 +243,97 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
     \begin{enumerate}[(1)]
         \item $\sigma^2$が既知か未知かにかかわらず
         \begin{align}
-            \hat{\mu} := \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+            \widehat{\mu} := \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
         \end{align}
         は$\mu$のUMVU推定量かつ最尤推定量である。
         \item $\mu$が既知の場合、
         \begin{align}
-            \hat{\sigma}^2 :=\frac{1}{n}\sum_{i=1}^n(X_i - \mu)^2
+            \widehat{\sigma^2} :=\frac{1}{n}\sum_{i=1}^n(X_i - \mu)^2
         \end{align}
         は$\sigma^2$のUMVU推定量かつ最尤推定量である。
         \item $\mu$が未知の場合、$\sigma^2$のUMVU推定量および最尤推定量はそれぞれ
         \begin{align}
-            \hat{\sigma}_{\text{UMVU}}^2 :=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2\, , \qquad \hat{\sigma}_{\text{MLE}}^2 :=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+            \widehat{\sigma^2_{\text{UMVU}}} :=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2\, , \qquad \widehat{\sigma^2_{\text{MLE}}} :=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
         \end{align}
         で与えられる。
     \end{enumerate}
 \end{proposition}
 \begin{proof}
     \begin{enumerate}[(1)]
-        \item $\E[\hat{\mu}]=\mu$が成り立つから、$\hat{\mu}$は$\mu$の不偏推定量。
+        \item $\E[\widehat{\mu}]=\mu$が成り立つから、$\widehat{\mu}$は$\mu$の不偏推定量。
         \begin{align}
             \log f(X|\mu,\sigma^2) = -\frac{1}{2}\log(2\pi\sigma^2) - \frac{(X-\mu)^2}{2\sigma^2}
         \end{align}
         より、$\mu$に関するFisher情報量は
         \begin{align}
-            I(\mu) = \E\left[\frac{(X-\mu)^2}{\sigma^4}\right] = \frac{1}{\sigma^2}\, .
+            I(\mu) = \E\left[\left(\frac{X-\mu}{\sigma^2}\right)^2\right] = \frac{1}{\sigma^2}\, .
         \end{align}
         $X_1,\ldots,X_n$は互いに独立だから、
         \begin{align}
-            \Var[\hat{\mu}] = \frac{1}{n^2}\sum_{i=1}^n\Var[X_i] = \sigma^2/n\, .
+            \Var[\widehat{\mu}] = \frac{1}{n^2}\sum_{i=1}^n\Var[X_i] = \sigma^2/n\, .
         \end{align}
-        よって定理\ref{th:UMVU1}より$\hat{\mu}$はUMVU推定量である。
+        よって定理\ref{th:UMVU1}より$\widehat{\mu}$はUMVU推定量である。
 
-        次に最尤推定量が$\hat{\mu}$になることを示す。対数尤度は、
-        \begin{align}
-            \ell(\mu, \sigma | X^n) = -\frac{n}{2}\log(2\pi\sigma^2) - \sum_{i=1}^n\frac{(X_i-\mu)^2}{2\sigma^2}
+        次に最尤推定量が$\widehat{\mu}$になることを示す。対数尤度は、
+        \begin{align}\label{llnorm}
+            \ell(\mu, \sigma^2 | \bm{X}) = -\frac{n}{2}\log(2\pi\sigma^2) - \sum_{i=1}^n\frac{(X_i-\mu)^2}{2\sigma^2}
         \end{align}
         これを$\mu$について最大化すると、
-        \begin{align}
-            \hat{\mu}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n X_i
+        \begin{align}\label{muMLEnorm}
+            \widehat{\mu}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n X_i
         \end{align}
-        となり、これは$\hat{\mu}$に一致。
+        となり、これは$\widehat{\mu}$に一致。
 
-        \item $X_1,\ldots,X_n$は互いに独立であることから$\E[\hat{\sigma}^2]=\sigma^2$が成り立つため、$\hat{\sigma}^2$は$\sigma^2$の不偏推定量。$\sigma$に関するFisher情報量は
+        \item $X_1,\ldots,X_n$は互いに独立であることから$\E[\widehat{\sigma^2}]=\sigma^2$が成り立つため、$\widehat{\sigma^2}$は$\sigma^2$の不偏推定量。$\tau=\sigma^2$とおくと
         \begin{align}
-            I(\sigma) = 
+            \frac{\partial^2}{\partial \tau^2}\log f(X|\mu, \tau)=\frac{1}{2\tau^2}-\frac{(X-\mu)^2}{\tau^3}
         \end{align}
+        となり、$\tau$に関するFisher情報量は
+        \begin{align}
+            I(\tau) = -\frac{1}{2\tau^2} + \frac{1}{\tau^2} = \frac{1}{2\tau^2}\,.
+        \end{align}
+        一方、$\widehat{\sigma^2}$の分散は
+        \begin{align}
+            \Var[\widehat{\sigma^2}] = \frac{1}{n^2}\sum_{i=1}^n \Var[(X_i-\mu)^2]=\frac{2\sigma^4}{n}
+        \end{align}
+        である。最後の等号は$\left((X_i-\mu)/\sigma\right)^2$が自由度1の$\chi^2$分布に従うことから（$\chi^2$分布の分散を知っていれば）求めることができる（当然定義通りに計算してもよいが、4次モーメントを求める必要があるためやや面倒）。これらの結果と定理\ref{th:UMVU1}より$\widehat{\sigma^2}$はUMVU推定量である。
+        次に最尤推定量を求める。\eqref{llnorm}より
+        \begin{align}
+            \frac{\partial}{\partial \tau}\ell(\mu, \tau|\bm{X}) = -\frac{n}{2\tau}+\sum_{i=1}^n\frac{(X_i-\mu)^2}{2\tau^2}\,.
+        \end{align}
+        よって最尤推定量は
+        \begin{align}\label{sigmaMLEnorm}
+            \widehat{\sigma^2_{\text{MLE}}} = \frac{1}{n}\sum_{i=1}^n(X_i-\mu)^2
+        \end{align}
+        となり、$\widehat{\sigma^2}$に一致する。
+
+        \item 分散の定義が平均値$\mu$に陽に依存するため、$\mu$が既知か未知かによって推定量が変わり得る。
+        \begin{align}
+            \begin{aligned}
+            \E\left[\sum_{i=1}^n(X_i-\bar{X})^2\right] &= \sum_{i=1}^n\E\left[(X_i-\mu  + \mu - \bar{X})^2\right] \\
+            & = \sum_{i=1}^n\E[(X_i-\mu)^2] -2\E\left[\sum_{i=1}^n(X_i-\mu)(\bar{X}-\mu)\right] + \sum_{i=1}^n\E\left[(\bar{X}-\mu)^2\right]\\
+            & = n\sigma^2 -2n\E[(\bar{X}-\mu)^2] + \E[(\bar{X}-\mu)^2]\\
+            & = n\sigma^2 - n\Var(\bar{X})\\
+            & = (n-1) \sigma^2
+            \end{aligned}
+        \end{align}
+        より、$\sigma^2$の不偏推定量は
+        \begin{align}
+            \widehat{\sigma^2_{\text{UMVU}}} =\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2
+        \end{align}
+        のように、$n$の代わりに$n-1$で割ったものとなる。ここでは実際に確かめることはしないが、これはCram\'{e}r-Raoの不等式の下限を満たさない。よってこれが実際にUMVU推定量であることを示すためには定理\ref{th:UMVU2}を使う必要がある。
+        $X_1,\ldots,X_n$の同時密度分布が
+        \begin{align*}
+            f(\bm{x}) & = \frac{1}{(2\pi\sigma^2)^{n/2}}\prod_{i=1}^n\exp\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) \\
+            & =\frac{1}{(2\pi\sigma^2)^{n/2}}\exp\left(-\frac{n(\bar{x}-\mu)^2}{2\sigma^2}-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\bar{x})^2\right)
+        \end{align*}
+        と書けることから、$T=(\bar{X}, \sum_{i=1}^n(X_i-\bar{X})^2)$は十分統計量であり、証明は省略するがこれは完備である。以上のことから、$\widehat{\sigma^2_{\text{UMVU}}}$は不偏推定量かつ完備十分統計量（の関数）であるから、定理\ref{th:UMVU2}よりUMVU推定量である。
+
+        次に最尤推定量を求める。この場合は対数尤度を$\mu$と$\sigma$で同時に最大化する必要がある。しかし、(1)で求めた$\mu$の最尤推定量\eqref{muMLEnorm}は$\sigma$に依らないため今の場合も同様に成り立ち、その$\widehat{\mu}_{\text{MLE}}$を$\mu$に代入して$\sigma$について最大化すればよい。当然その結果は(2)の結果\eqref{sigmaMLEnorm}の$\mu$を$\widehat{\mu}_{\text{MLE}}$で置き換えたものになるため、
+        \begin{align}
+            \widehat{\sigma^2_{\text{MLE}}} = \frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+        \end{align}
+        となる。
     \end{enumerate}
 \end{proof}
 
