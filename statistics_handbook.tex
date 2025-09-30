@@ -170,13 +170,15 @@
 \makeatother
 
 
+\setcounter{tocdepth}{3} % subsubsection まで目次に表示
+
 
 
 \begin{document}
 
 \tableofcontents
 
-\section{便利な定理まとめ}
+\section{重要な定理まとめ}
 \subsection{推定論}
 $X$をパラメータ$\theta$を持つある確率分布に従う確率変数であるとする。Fisher情報量$I(\theta)$を
 \begin{align}
@@ -186,7 +188,7 @@ $X$をパラメータ$\theta$を持つある確率分布に従う確率変数で
 \begin{align}
     I(\theta) = -\E_\theta\left[\frac{\partial^2 \log f(X|\theta)}{\partial \theta^2}\right]
 \end{align}
-で定義しても等価である。
+で定義しても等価である。後者の形式の方が計算しやすい場合も多い。
 
 なお、上記の定義において$f(X|\theta)$となっているところを$n$サンプル$X_1,\ldots,X_n$の尤度関数$L(\theta|X_1,\ldots,X_n)=\prod_{i=1}^nf(X_i|\theta)$に置き換えて定義したものを$I_n(\theta)$と書くと、$X_1, \ldots, X_n$が独立同分布である限り$I_n(\theta)=nI(\theta)$が成り立つ。
 $I(\theta)$と$I_n(\theta)$のどちらをFisher情報量と呼ぶのかは分野や文献に依る。
@@ -224,9 +226,39 @@ $I(\theta)$と$I_n(\theta)$のどちらをFisher情報量と呼ぶのかは分�
     $T$が完全十分統計量であるとき、以下の2つが成り立つ。
     \begin{enumerate}[(1)]
         \item $T$の関数である不偏推定量$\delta(T)$は一意に定まり、$\delta(T)$はUMVU推定量である。
-        \item 任意の不偏推定量$\hat{\theta}$に対して、$\E[\hat{\theta}|T]$は$\delta(T)$に一致する。
+        \item 任意の不偏推定量$\widehat{\theta}$に対して、$\E[\widehat{\theta}|T]$は$\delta(T)$に一致する。
     \end{enumerate}
 \end{theorem}
+
+この定理は、十分統計量に関する重要な定理であるRao-Blackwellの定理を完備十分統計量に対して適用したときの一つの帰結である。
+
+\subsection{区間推定}
+パラメータ$\theta\in\Theta$を持つ確率分布に従う確率変数$X$を考える。$\Theta$の部分集合$S(X)$が信頼係数$1-\alpha$の信頼域であるとは、
+\begin{align}\label{confidence}
+    P_\theta(\theta\in S(X))\ge 1-\alpha\,,\qquad \forall\theta\in\Theta
+\end{align}
+を満たすことをいう。信頼域$S(X)$を推定することを、区間推定という。
+
+信頼域$S(X)$の定義\eqref{confidence}の意味を言葉で表現すると、「『真のパラメータが$\theta$であるときに$\theta$が$S(X)$に含まれる確率が$1-\alpha$以上』がどんな$\theta$に対しても成り立つこと」である。つまり、区間推定とは、真のパラメータが高い確率（$\ge 1-\alpha$）で含まれるような範囲を確率変数の観測値から推定することである。
+
+信頼域$S(X)$は、仮説検定を用いて以下の定理から構築することができる。
+\begin{theorem}\label{th:confidenceregion}
+    任意の$\theta_0$に対して、$\theta = \theta_0$を単純帰無仮説とするような両側検定
+    \begin{align}
+            H_0: \theta=\theta_0,\qquad H_1: \theta\neq \theta_0
+    \end{align}
+    を考える。$A(\theta_0)$を、この検定における有意水準$\alpha$の受容域とする。すなわち、
+    \begin{align}
+        P_{\theta_0}(X\in A(\theta_0))\ge 1-\alpha
+    \end{align}
+    を満たすとする。このとき、パラメータ空間の部分集合$S(X)\in\Theta$を
+    \begin{align}
+        S(X) = \left\{\theta\mid x\in A(\theta)\right\}
+    \end{align}
+    と定義すると、$S(X)$は信頼係数$1-\alpha$の信頼域である。
+\end{theorem}
+
+
 \section{正規分布}
 本節では、正規分布に関する推定量の基本的事項についてのまとめ・導出を行う。
 
@@ -236,8 +268,9 @@ $I(\theta)$と$I_n(\theta)$のどちらをFisher情報量と呼ぶのかは分�
 \end{align}
 に従うとき、$X\sim N(\mu, \sigma^2)$と表記する。
 
-\subsection{1標本問題の点推定}
-$X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := \frac{1}{n}\sum_{i=1}^n X_i$とする。
+\subsection{1標本問題}
+$X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := \frac{1}{n}\sum_{i=1}^n X_i$とする。このように、1つの母集団に関する推測問題を1標本問題と呼ぶ。
+\subsubsection{点推定}
 \begin{proposition}
     パラメータ$\mu,\sigma^2$の推定量に関して、以下が成り立つ。
     \begin{enumerate}[(1)]
@@ -253,7 +286,7 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
         は$\sigma^2$のUMVU推定量かつ最尤推定量である。
         \item $\mu$が未知の場合、$\sigma^2$のUMVU推定量および最尤推定量はそれぞれ
         \begin{align}
-            \widehat{\sigma^2_{\text{UMVU}}} :=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2\, , \qquad \widehat{\sigma^2_{\text{MLE}}} :=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+            \widehat{\sigma^2}_{\text{unbiased}} :=\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2\, , \qquad \widehat{\sigma^2}_{\text{MLE}} :=\frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
         \end{align}
         で与えられる。
     \end{enumerate}
@@ -303,7 +336,7 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
         \end{align}
         よって最尤推定量は
         \begin{align}\label{sigmaMLEnorm}
-            \widehat{\sigma^2_{\text{MLE}}} = \frac{1}{n}\sum_{i=1}^n(X_i-\mu)^2
+            \widehat{\sigma^2}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n(X_i-\mu)^2
         \end{align}
         となり、$\widehat{\sigma^2}$に一致する。
 
@@ -319,7 +352,7 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
         \end{align}
         より、$\sigma^2$の不偏推定量は
         \begin{align}
-            \widehat{\sigma^2_{\text{UMVU}}} =\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2
+            \widehat{\sigma^2}_{\text{unbiased}} =\frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2
         \end{align}
         のように、$n$の代わりに$n-1$で割ったものとなる。ここでは実際に確かめることはしないが、これはCram\'{e}r-Raoの不等式の下限を満たさない。よってこれが実際にUMVU推定量であることを示すためには定理\ref{th:UMVU2}を使う必要がある。
         $X_1,\ldots,X_n$の同時密度分布が
@@ -327,16 +360,78 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
             f(\bm{x}) & = \frac{1}{(2\pi\sigma^2)^{n/2}}\prod_{i=1}^n\exp\left(-\frac{(x_i-\mu)^2}{2\sigma^2}\right) \\
             & =\frac{1}{(2\pi\sigma^2)^{n/2}}\exp\left(-\frac{n(\bar{x}-\mu)^2}{2\sigma^2}-\frac{1}{2\sigma^2}\sum_{i=1}^n(x_i-\bar{x})^2\right)
         \end{align*}
-        と書けることから、$T=(\bar{X}, \sum_{i=1}^n(X_i-\bar{X})^2)$は十分統計量であり、証明は省略するがこれは完備である。以上のことから、$\widehat{\sigma^2_{\text{UMVU}}}$は不偏推定量かつ完備十分統計量（の関数）であるから、定理\ref{th:UMVU2}よりUMVU推定量である。
+        と書けることから、$T=(\bar{X}, \sum_{i=1}^n(X_i-\bar{X})^2)$は十分統計量であり、証明は省略するがこれは完備である。以上のことから、$\widehat{\sigma^2}_{\text{unbiased}}$は不偏推定量かつ完備十分統計量（の関数）であるから、定理\ref{th:UMVU2}よりUMVU推定量である。
 
         次に最尤推定量を求める。この場合は対数尤度を$\mu$と$\sigma$で同時に最大化する必要がある。しかし、(1)で求めた$\mu$の最尤推定量\eqref{muMLEnorm}は$\sigma$に依らないため今の場合も同様に成り立ち、その$\widehat{\mu}_{\text{MLE}}$を$\mu$に代入して$\sigma$について最大化すればよい。当然その結果は(2)の結果\eqref{sigmaMLEnorm}の$\mu$を$\widehat{\mu}_{\text{MLE}}$で置き換えたものになるため、
         \begin{align}
-            \widehat{\sigma^2_{\text{MLE}}} = \frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
+            \widehat{\sigma^2}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n(X_i-\bar{X})^2
         \end{align}
         となる。
     \end{enumerate}
 \end{proof}
 
+
+\subsubsection{区間推定}
+\begin{theorem}
+    有意水準を$\alpha$とする。$\mu$の信頼区間は、以下で与えられる。
+    \begin{enumerate}[(1)]
+        \item $\sigma^2$が既知の場合、
+        \begin{align}
+            \bar{X} \pm z_{\alpha/2}\cdot\frac{\sigma}{\sqrt{n}}\,.
+        \end{align}
+        ここで、$z_{\alpha}$は標準正規分布$N(0, 1)$の両側$\alpha$点である。また、これは一様最強力不偏信頼区間である。
+
+        \item $\sigma^2$が未知の場合、
+        \begin{align}
+            \bar{X} \pm t_{\alpha/2}(n-1)\cdot\frac{s}{\sqrt{n}}\,.
+        \end{align}
+        ここで、$t_{\alpha/2}(n-1)$は自由度$n-1$の$t$分布の両側$\alpha$点であり、$s$は不偏分散
+        \begin{align}\label{sqrtubs}
+            s^2 = \frac{1}{n-1}\sum_{i=1}^n(X_i-\bar{X})^2
+        \end{align}
+        の平方根である。また、これは一様最強力不偏信頼区間である。
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+    \begin{enumerate}[(1)]
+        \item 任意の$\mu_0$に対して、$\mu=\mu_0$を単純帰無仮説とするような両側検定
+        \begin{align}\label{mutest1}
+            H_0: \mu=\mu_0,\qquad H_1: \mu\neq \mu_0
+        \end{align}
+        を考える。帰無仮説のもとで、$\bar{X}\sim N(\mu_0, \sigma^2/n)$より、
+        \begin{align}
+            \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}
+        \end{align}
+        は標準正規分布に従うから、
+        \begin{align}
+            -z_{\alpha/2} < \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}} < z_{\alpha/2}
+        \end{align}
+        は検定\eqref{mutest1}の有意水準$1-\alpha$の受容域である。定理\ref{th:confidenceregion}より、この不等式を一般の$\mu$について解いたもの
+        \begin{align}
+            \bar{X} - z_{\alpha/2}\cdot\frac{\sigma}{\sqrt{n}} < \mu < \bar{X} + z_{\alpha/2}\cdot\frac{\sigma}{\sqrt{n}}
+        \end{align}
+        は$\mu$の信頼域を与える。\cmt{一様最強力不偏信頼区間の証明}
+
+        \item 任意の$\mu_0$に対して、$\mu=\mu_0$を単純帰無仮説とするような両側検定
+        \begin{align}\label{mutest2}
+            H_0: \mu=\mu_0,\qquad H_1: \mu\neq \mu_0
+        \end{align}
+        を考える。$\sigma^2$が未知の場合は(1)のときのように$\bar{X}$が正規分布に従うと言えない。\eqref{sqrtubs}で定義された$s$を用いて
+        \begin{align}
+            T = \frac{\sqrt{n}(\bar{X}-\mu_0)}{s}
+        \end{align}
+        と定義された$T$は$t$統計量と呼ばれ、自由度$n-1$の$t$分布に従うことが知られている。よって、
+        \begin{align}
+            -t_{\alpha/2}(n-1) < \frac{\sqrt{n}(\bar{X}-\mu_0)}{s} < t_{\alpha/2}
+        \end{align}
+        は検定\eqref{mutest2}の有意水準$1-\alpha$の受容域である。定理\ref{th:confidenceregion}より、この不等式を一般の$\mu$について解いたもの
+        \begin{align}
+            \bar{X} - t_{\alpha/2}(n-1)\cdot\frac{s}{\sqrt{n}} < \mu < \bar{X} + t_{\alpha/2}(n-1)\cdot\frac{s}{\sqrt{n}}
+        \end{align}
+        は$\mu$の信頼域を与える。\cmt{一様最強力不偏信頼区間の証明}
+    \end{enumerate}
+\end{proof}
 
 \end{document}
 
