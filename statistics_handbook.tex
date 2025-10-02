@@ -417,7 +417,7 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
         \begin{align}\label{mutest2}
             H_0: \mu=\mu_0,\qquad H_1: \mu\neq \mu_0
         \end{align}
-        を考える。$\sigma^2$が未知の場合は(1)のときのように$\bar{X}$が正規分布に従うと言えない。\eqref{sqrtubs}で定義された$s$を用いて
+        を考える。$\sigma^2$が未知の場合は(1)のときのように$\bar{X}$が正規分布に従うと言えない。帰無仮説のもとで、\eqref{sqrtubs}で定義された$s$を用いて
         \begin{align}
             T = \frac{\sqrt{n}(\bar{X}-\mu_0)}{s}
         \end{align}
@@ -432,6 +432,30 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
         は$\mu$の信頼域を与える。\cmt{一様最強力不偏信頼区間の証明}
     \end{enumerate}
 \end{proof}
+
+\begin{theorem}
+    有意水準を$\alpha$とする。$\sigma^2$の信頼区間は
+    \begin{align}
+        \frac{(n-1)s^2}{\chi^2_{\alpha/2}(n-1)} < \sigma^2 < \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}(n-1)}
+    \end{align}
+    となる。ここで、$s^2$は不偏分散である。
+\end{theorem}
+\begin{proof}
+    任意の$\sigma_0^2$に対して、$\sigma^2=\sigma^2_0$を単純帰無仮説とするような両側検定
+    \begin{align}\label{sigmatest}
+            H_0: \sigma^2=\sigma^2_0,\qquad H_1: \sigma^2\neq \sigma^2_0
+    \end{align}
+    を考える。帰無仮説のもとで、$(n-1)s^2/\sigma_0^2$は自由度$n-1$の$\chi^2$分布に従うため、
+    \begin{align}
+        \chi_{1-\alpha/2}^2(n-1) < \frac{(n-1)s^2}{\sigma_0^2} < \chi_{\alpha/2}^2(n-1)
+    \end{align}
+    は有意水準$1-\alpha$の受容域である。定理\ref{th:confidenceregion}より、この不等式を一般の$\sigma^2$について解いたもの
+    \begin{align}
+        \frac{(n-1)s^2}{\chi^2_{\alpha/2}(n-1)} < \sigma^2 < \frac{(n-1)s^2}{\chi^2_{1-\alpha/2}(n-1)}
+    \end{align}
+    は$\sigma^2$の信頼域を与える。
+\end{proof}
+
 
 \end{document}
 
