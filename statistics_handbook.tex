@@ -544,9 +544,43 @@ $X_1,\ldots,X_n \sim N(\mu, \sigma^2)$, i.i.d. とする。また、$\bar{X} := 
 
 \section{Bernoulli分布・二項分布}
 \subsection{1標本問題}
-まずは1標本問題を考える。つまり、$X_1,\ldots, X_n\sim \text{Bernoulli}(p)$, i.i.d. とする。和$S_n=\sum_{i=1}^nX_i$は二項分布$\text{Bin}(n, p)$に従い、$\E[S_n]=np$、$\Var(S_n)=np(1-p)$である。
+まずは1標本問題を考える。つまり、$X_1,\ldots, X_n\sim \text{Bernoulli}(p)$, i.i.d. とする。Bernoulli分布の期待値は$\E[X_i]=p$、分散は$\Var[X_i]=p(1-p)$である。$n$サンプルの和$S_n=\sum_{i=1}^nX_i$は二項分布$\text{Bin}(n, p)$に従い、$\E[S_n]=np$、$\Var(S_n)=np(1-p)$である。
 \subsubsection{点推定}
+\begin{theorem}
+    パラメータ$p$の推定量に関して、
+        \begin{align}
+            \widehat{p} := \frac{1}{n}\sum_{i=1}^n X_i
+        \end{align}
+        は$p$のUMVU推定量かつ最尤推定量である。
+\end{theorem}
+\begin{proof}
+    $\E[\widehat{p}]=p$が成り立つから、$\widehat{p}$は$p$の不偏推定量。
+    \begin{align}
+        f(x|p) = p^x(1-p)^{1-x},\quad x=0, 1
+    \end{align}
+    より、$p$に関するFisher情報量は
+    \begin{align}
+        I(p) = \E\left[\frac{X}{p^2}+\frac{1-X}{(1-p)^2}\right] = \frac{1}{p(1-p)}\, .
+    \end{align}
+    $X_1,\ldots,X_n$は互いに独立だから、
+    \begin{align}
+        \Var[\widehat{p}] = \frac{1}{n^2}\sum_{i=1}^n\Var[X_i] = \frac{p(1-p)}{n}\, .
+    \end{align}
+    よって定理\ref{th:UMVU1}より$\widehat{p}$はUMVU推定量である。
 
+    次に最尤推定量が$\widehat{p}$になることを示す。対数尤度は、
+    \begin{align}
+        \ell(p|\bm{X}) = \sum_{i=1}^n\left(X_i\log p + (1-X_i)\log(1-p)\right)
+    \end{align}
+    これを$p$について最大化すると、
+    \begin{align}
+        \widehat{p}_{\text{MLE}} = \frac{1}{n}\sum_{i=1}^n X_i
+    \end{align}
+    となり、これは$\widehat{p}$に一致。
+\end{proof}
+
+\subsubsection{検定}
+\subsubsection{区間推定}
 
 \end{document}
 
